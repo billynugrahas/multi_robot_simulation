@@ -1,0 +1,52 @@
+<launch>
+  <arg name="first_robot"   default="scout"/>
+  <arg name="second_robot"  default="aliengo"/>
+
+  <arg name="first_robot_x_pos" default="-3.0"/>
+  <arg name="first_robot_y_pos" default=" 1.0"/>
+  <arg name="first_robot_z_pos" default=" 0.1"/>
+  <arg name="first_robot_yaw"   default=" 1.57"/>
+
+  <arg name="second_robot_x_pos" default=" 3.0"/>
+  <arg name="second_robot_y_pos" default=" 1.0"/>
+  <arg name="second_robot_z_pos" default=" 0.6"/>
+  <arg name="second_robot_yaw"   default=" 0"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find scout_aliengo_gazebo_navigation)/worlds/outdoor.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>  
+
+
+  <!-- ROS Controller for skid steer wheel -->
+  <include file="$(find scout_aliengo_gazebo_navigation)/launch/scout/control_scout.launch" />
+  <group ns = "$(arg first_robot)">
+
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find scout_aliengo_gazebo_navigation)/urdf/scout/scout_v2.xacro' botname:=$(arg first_robot)" />
+
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg first_robot) -x $(arg first_robot_x_pos) -y $(arg first_robot_y_pos) -z $(arg first_robot_z_pos) -Y $(arg first_robot_yaw) -param robot_description" />
+  
+    <!-- Publishing joint state for wheel, no more used because we use ros control -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
+    <!-- Combine joint values -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="tf_prefix" value="$(arg first_robot)" />
+      <!-- <param name="prefix_tf_with" value="$(arg first_tb3)" /> -->
+      <!-- <param name="frame_prefix" value="$(arg first_tb3)" /> -->
+      <param name="publish_frequency" type="double" value="50.0" />
+    </node>
+
+  </group>
+
+  <!-- for aliengo we don't have to spawn it in group with ns -->
+  <include file="$(find scout_aliengo_gazebo_navigation)/launch/aliengo/spawn_aliengo.launch">
+    <arg name="robot_name" value="$(arg second_robot)"/>
+  </include>  
+
+  
+</launch>
