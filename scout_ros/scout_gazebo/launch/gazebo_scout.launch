@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="x" default="-3"/>
+  <arg name="y" default="1"/>
+  <arg name="z" default="0.1"/>
+  <arg name="robot_name"         default="scout"/> <!-- Change this for namespacing. -->   
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find scout_gazebo)/worlds/outdoor.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <node name="scout_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+        args="-urdf -param robot_description -model scout -x $(arg x) -y $(arg y) -z $(arg z)" />
+
+  <param name="robot_description" 
+        command="$(find xacro)/xacro 
+                 --inorder '$(find scout_description)/urdf/scout/scout_v2.xacro' botname:=$(arg robot_name)"/>
+
+  <!-- Combine joint values -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+      <param name="tf_prefix" value="$(arg robot_name)" />
+      <param name="publish_frequency" type="double" value="50.0" />
+  </node>
+
+  <!-- Publishing joint state for wheel -->
+  <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/> -->
+
+  <include file="$(find scout_gazebo)/launch/control_scout.launch"/>
+
+  <!-- Show in Rviz   -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find scout_gazebo)/rviz/visualize_scout.rviz"/>
+
+</launch>
