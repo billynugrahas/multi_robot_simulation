@@ -26,7 +26,7 @@
   <include file="$(find scout_aliengo_gazebo_navigation)/launch/scout/control_scout.launch" />
   <group ns = "$(arg first_robot)">
 
-    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find scout_aliengo_gazebo_navigation)/urdf/scout/scout_v2.xacro' botname:=$(arg first_robot)" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find scout_description)/urdf/scout_v2.xacro' botname:=$(arg first_robot)"/>
 
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg first_robot) -x $(arg first_robot_x_pos) -y $(arg first_robot_y_pos) -z $(arg first_robot_z_pos) -Y $(arg first_robot_yaw) -param robot_description" />
   

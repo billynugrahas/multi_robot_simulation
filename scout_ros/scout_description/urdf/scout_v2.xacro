@@ -4,9 +4,7 @@
     <xacro:arg name="botname" default=""/>
 
     <xacro:include filename="$(find scout_description)/urdf/common_properties.xacro" />
-    <xacro:include filename="$(find scout_description)/urdf/scout/scout_v2.gazebo.xacro" />
-
-    <xacro:arg name="robot_namespace" default="/" /> 
+    <xacro:include filename="$(find scout_description)/urdf/scout_v2.gazebo.xacro" />
 
     <xacro:include filename="$(find scout_description)/urdf/scout_wheel_type1.xacro" />
     <xacro:include filename="$(find scout_description)/urdf/scout_wheel_type2.xacro" />
@@ -50,7 +48,7 @@
 
     <link name="base_footprint"/>
 
-    <joint name="base_footprint_joint" type="fixed">
+    <joint name="base_link_joint" type="fixed">
         <origin xyz="0 0 ${wheel_radius - wheel_vertical_offset}" rpy="0 0 0" />
         <parent link="base_footprint" />
         <child link="base_link" />
@@ -80,7 +78,7 @@
       <visual>
         <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://scout_description/meshes/scout/hokuyo.dae"/>
+          <mesh filename="package://scout_description/meshes/hokuyo.dae"/>
         </geometry>
         <material name="dark"/>
       </visual>
@@ -105,7 +103,7 @@
     <!-- wheel labeled from 0 to 3, conter-clockwise, starting from front right wheel -->
     <!-- motor 1 and 2 (left side) are mechanically installed in a reversed direction -->
     <xacro:scout_wheel_type1 wheel_prefix="front_right">
-        <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="3.14 0 0" />
+        <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
     </xacro:scout_wheel_type1>
     <xacro:scout_wheel_type2 wheel_prefix="front_left">
         <origin xyz="${wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
@@ -114,7 +112,7 @@
         <origin xyz="${-wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
     </xacro:scout_wheel_type1>
     <xacro:scout_wheel_type2 wheel_prefix="rear_right">
-        <origin xyz="${-wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="3.14 0 0" />
+        <origin xyz="${-wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
     </xacro:scout_wheel_type2>
 
 </robot>
