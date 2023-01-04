@@ -41,7 +41,7 @@
     <remap from="map" to="/map"/>
     
     <!-- AMCL -->
-    <include file="$(find scout_navigation)/launch/aliengo/amcl.launch">
+    <include file="$(find aliengo_navigation)/launch/amcl.launch">
       <arg name="odom_frame_id" value="$(arg robot_name_2)/odom"/>
       <arg name="base_frame_id" value="$(arg robot_name_2)/base_footprint"/>
       <arg name="scan_topic" value="scan"/>

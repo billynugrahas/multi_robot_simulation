@@ -1,13 +1,14 @@
 <launch>
-    <arg name="robot_name"         default="/"/> <!-- Change this for namespacing. -->
+    <arg name="robot_name"         default="aliengo"/> <!-- Change this for namespacing. -->
     <arg name="rviz"               default="false"/> <!-- Set to true to run rviz in parallel. -->
     <arg name="lite"               default="false" />  <!-- Set to true if you're using CHAMP lite version. Only useful for microcontrollers. -->
     <arg name="ros_control_file"   default="$(find aliengo_config)/config/ros_control/ros_control.yaml" /> <!-- Path to ROS Control configurations. Do not touch. -->
     <arg name="gazebo_world"       default="$(find aliengo_config)/worlds/outdoor.world" /> <!-- Path to Gazebo world you want to load. -->
     <arg name="world_init_x"       default="0.0" /> <!-- X Initial position of the robot in Gazebo World -->
     <arg name="world_init_y"       default="0.0" /> <!-- Y Initial position of the robot in Gazebo World -->
-    <arg name="world_init_z"       default="0.7" /> <!-- Y Initial position of the robot in Gazebo World -->
+    <arg name="world_init_z"       default="1.0" /> <!-- Y Initial position of the robot in Gazebo World -->
     <arg name="world_init_heading" default="0.0" /> <!-- Initial heading of the robot in Gazebo World -->
+    
     <arg name="gait_config_file"   default="$(find aliengo_gazebo)/config/gait.yaml"/>  <!-- Path to gait parameters. Do not touch this. -->
 
     <param name="use_sim_time" value="true" />
